@@ -1,55 +1,76 @@
-from sqlalchemy import create_engine
+"""
+Configuración de base de datos MySQL con SQLAlchemy
+Incluye sesión, base declarativa y utilidades
+"""
+from sqlalchemy import create_engine, event
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
-import os
+from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.pool import QueuePool
+from config import settings
+import logging
 
-# Cargar variables de entorno
-load_dotenv()
+logger = logging.getLogger(__name__)
 
-# Configuración de la base de datos
-DB_USER = os.getenv("DB_USER", "root")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "")
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_PORT = os.getenv("DB_PORT", "3306")
-DB_NAME = os.getenv("DB_NAME", "servicios_medicos")
-
-# Crear URL de conexión
-DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-
-# Crear engine de SQLAlchemy
+# Motor de base de datos con pool de conexiones
 engine = create_engine(
-    DATABASE_URL,
-    pool_pre_ping=True,
-    pool_recycle=3600,
-    echo=False
+    settings.DATABASE_URL,
+    poolclass=QueuePool,
+    pool_size=10,
+    max_overflow=20,
+    pool_pre_ping=True,  # Verifica conexiones antes de usarlas
+    pool_recycle=3600,   # Recicla conexiones cada hora
+    echo=settings.DEBUG,  # Muestra SQL en modo debug
 )
 
-# Crear SessionLocal
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Session factory
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine
+)
 
-# Base para los modelos
+# Base para modelos declarativos
 Base = declarative_base()
 
-# Dependencia para obtener sesión de base de datos
-def get_db():
+
+# Event listeners para MySQL
+@event.listens_for(engine, "connect")
+def set_mysql_pragma(dbapi_conn, connection_record):
+    """Configura parámetros de MySQL al conectar"""
+    cursor = dbapi_conn.cursor()
+    cursor.execute("SET SESSION sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'")
+    cursor.execute("SET SESSION time_zone='+00:00'")
+    cursor.close()
+
+
+def get_db() -> Session:
+    """
+    Dependency para obtener sesión de base de datos
+    Uso en FastAPI:
+        @app.get("/endpoint")
+        def endpoint(db: Session = Depends(get_db)):
+            ...
+    """
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
 
-# Función para crear todas las tablas
-def create_tables():
-    Base.metadata.create_all(bind=engine)
-    print("✅ Tablas creadas exitosamente")
 
-# Función para verificar conexión
-def check_connection():
+def init_db():
+    """Inicializa la base de datos creando todas las tablas"""
     try:
-        with engine.connect() as connection:
-            print("✅ Conexión a la base de datos exitosa")
-            return True
+        Base.metadata.create_all(bind=engine)
+        logger.info("Base de datos inicializada correctamente")
     except Exception as e:
-        print(f"❌ Error de conexión: {e}")
-        return False
+        logger.error(f"Error al inicializar base de datos: {e}")
+        raise
+
+
+def drop_all_tables():
+    """PELIGRO: Elimina todas las tablas - Solo para desarrollo"""
+    if not settings.DEBUG:
+        raise Exception("No se puede eliminar tablas en producción")
+    Base.metadata.drop_all(bind=engine)
+    logger.warning("Todas las tablas eliminadas")
