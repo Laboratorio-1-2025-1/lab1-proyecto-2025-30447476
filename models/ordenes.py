@@ -5,7 +5,7 @@ Módulo 2.4: Órdenes y prestaciones
 - Prescripcion: medicamentos e insumos
 - Resultado: actas y resultados de órdenes
 """
-from sqlalchemy import Column, String, DateTime, Integer, ForeignKey, Enum, Text, JSON, Numeric
+from sqlalchemy import Column, String, DateTime, Integer, ForeignKey, Enum, Text, JSON, Numeric, Boolean
 from sqlalchemy.orm import relationship
 from models.base import BaseModel
 import enum

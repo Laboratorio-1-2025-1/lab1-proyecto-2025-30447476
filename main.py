@@ -26,12 +26,12 @@ from routers.profesionales import router as router_profesionales
 from routers.unidades import router_unidades  # Ver archivo all_routers_complete.py
 
 # Módulo 2.2: Agenda y Citas
-from routers.agenda import router_agenda
+#from routers.agenda import router_agenda
 from routers.citas import router as router_citas
 
 # Módulo 2.3: Registro Clínico
 from routers.episodios import router_episodios
-from routers.notas import router_notas
+#from routers.notas import router_notas
 from routers.diagnosticos import router_diagnosticos
 from routers.consentimientos import router_consentimientos
 
@@ -42,7 +42,7 @@ from routers.prescripciones import router_prescripciones
 from routers.resultados import router_resultados
 
 # Módulo 2.5: Aseguradoras
-from routers.aseguradoras import router_aseguradoras
+#from routers.aseguradoras import router_aseguradoras
 from routers.planes import router_planes
 from routers.afiliaciones import router_afiliaciones
 from routers.autorizaciones import router_autorizaciones
@@ -53,14 +53,14 @@ from routers.arancel import router_arancel
 
 # Módulo 2.7: Facturación
 from routers.facturas import router_facturas
-from routers.pagos import router_pagos
+#from routers.pagos import router_pagos
 
 # Módulo 2.8: Notificaciones
-from routers.notificaciones_router import router_notificaciones
+#from routers.notificaciones_router import router_notificaciones
 
 # Módulo 2.9: Auditoría y Auth
 from routers.auditoria import router_auditoria
-from routers.auth import router_auth
+#from routers.auth import router_auth
 
 # Configurar logging
 logging.basicConfig(
@@ -285,7 +285,7 @@ def root():
 prefix = settings.API_V1_PREFIX
 
 # Autenticación (sin prefijo adicional, ya tiene /auth)
-app.include_router(router_auth, prefix=prefix)
+#app.include_router(router_auth, prefix=prefix)
 
 # Módulo 2.1: Identidades
 app.include_router(router_personas, prefix=prefix)
@@ -293,12 +293,12 @@ app.include_router(router_profesionales, prefix=prefix)
 app.include_router(router_unidades, prefix=prefix)
 
 # Módulo 2.2: Agenda y Citas
-app.include_router(router_agenda, prefix=prefix)
+#app.include_router(router_agenda, prefix=prefix)
 app.include_router(router_citas, prefix=prefix)
 
 # Módulo 2.3: Registro Clínico
 app.include_router(router_episodios, prefix=prefix)
-app.include_router(router_notas, prefix=prefix)
+#app.include_router(router_notas, prefix=prefix)
 app.include_router(router_diagnosticos, prefix=prefix)
 app.include_router(router_consentimientos, prefix=prefix)
 
@@ -309,7 +309,7 @@ app.include_router(router_prescripciones, prefix=prefix)
 app.include_router(router_resultados, prefix=prefix)
 
 # Módulo 2.5: Aseguradoras
-app.include_router(router_aseguradoras, prefix=prefix)
+#app.include_router(router_aseguradoras, prefix=prefix)
 app.include_router(router_planes, prefix=prefix)
 app.include_router(router_afiliaciones, prefix=prefix)
 app.include_router(router_autorizaciones, prefix=prefix)
@@ -320,10 +320,10 @@ app.include_router(router_arancel, prefix=prefix)
 
 # Módulo 2.7: Facturación
 app.include_router(router_facturas, prefix=prefix)
-app.include_router(router_pagos, prefix=prefix)
+#app.include_router(router_pagos, prefix=prefix)
 
 # Módulo 2.8: Notificaciones
-app.include_router(router_notificaciones, prefix=prefix)
+#app.include_router(router_notificaciones, prefix=prefix)
 
 # Módulo 2.9: Auditoría
 app.include_router(router_auditoria, prefix=prefix)

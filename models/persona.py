@@ -1,6 +1,6 @@
 # app/models/persona.py
 from sqlalchemy import Column, Integer, String, Date, Enum
-from app.models.base import Base
+from models.base import Base
 
 class PersonaAtendida(Base):
     """Corresponde a la entidad PersonasAtendidas (Pacientes) - Sección 2.1"""

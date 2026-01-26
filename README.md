@@ -197,8 +197,8 @@ python -m venv venv
 # Linux/Mac
 source venv/bin/activate
 
-# Windows CMD
-venv\Scripts\activate.bat
+# Windows Git bash
+source ./venv/Scripts/activate
 
 # Windows PowerShell
 venv\Scripts\Activate.ps1

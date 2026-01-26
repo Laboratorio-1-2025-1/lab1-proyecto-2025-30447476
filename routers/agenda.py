@@ -3,9 +3,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 
-from app.database import get_db
-from app.models.agenda import Agenda
-from app.schemas.agenda import AgendaBase, AgendaResponse
+from database import get_db
+from models.agenda import Agenda
+from schemas.agenda import AgendaBase, AgendaResponse
 
 router = APIRouter(
     prefix="/agenda",

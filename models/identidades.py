@@ -4,7 +4,7 @@ Módulo 2.1: Identidades y vinculación asistencial
 - Profesionales (médicos, enfermería, terapias)
 - UnidadesAtencion (sedes/consultorios/servicios)
 """
-from sqlalchemy import Column, String, Date, Enum, Text, JSON
+from sqlalchemy import Column, String, Date, Enum, Text, JSON, Boolean
 from sqlalchemy.orm import relationship
 from models.base import BaseModel
 import enum

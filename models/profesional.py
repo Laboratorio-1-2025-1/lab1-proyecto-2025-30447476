@@ -1,6 +1,6 @@
 # app/models/profesional.py
 from sqlalchemy import Column, Integer, String, Enum, Boolean
-from app.models.base import Base
+from models.base import Base
 
 class Profesional(Base):
     """Corresponde a la entidad Profesionales - Sección 2.1/2.2"""

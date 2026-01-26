@@ -1,6 +1,6 @@
 # app/models/unidad.py
 from sqlalchemy import Column, Integer, String, Enum
-from app.models.base import Base
+from models.base import Base
 
 class UnidadAtencion(Base):
     """Corresponde a la entidad UnidadesAtencion - Sección 2.1/2.2"""

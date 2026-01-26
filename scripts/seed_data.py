@@ -3,9 +3,12 @@ Script para generar datos iniciales (seed data)
 Crea usuarios, roles, permisos, prestaciones, etc.
 """
 import sys
-sys.path.append('..')
+import os
 
-from database import SessionLocal, init_db
+# Agregar el directorio raíz al path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from database import SessionLocal, init_db, Base, engine
 from models import *
 from services.auth_service import AuthService
 from datetime import datetime, date, timedelta
@@ -13,6 +16,13 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+def create_tables():
+    """Crear todas las tablas en la base de datos"""
+    logger.info("Creando tablas...")
+    Base.metadata.create_all(bind=engine)
+    logger.info("✅ Tablas creadas exitosamente")
 
 
 def create_roles_and_permissions(db):
@@ -259,6 +269,9 @@ def main():
     
     # Inicializar BD
     init_db()
+    
+    # Crear tablas
+    create_tables()
     
     db = SessionLocal()
     try:

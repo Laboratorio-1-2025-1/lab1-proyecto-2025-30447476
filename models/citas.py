@@ -1,7 +1,7 @@
 # app/models/cita.py
 from sqlalchemy import Column, Integer, DateTime, Enum, ForeignKey, Text
 from sqlalchemy.orm import relationship
-from app.models.base import Base
+from models.base import Base
 
 class Cita(Base):
     """Corresponde a la entidad Citas - Sección 2.2"""

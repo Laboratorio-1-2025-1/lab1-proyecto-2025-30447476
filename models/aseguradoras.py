@@ -5,7 +5,7 @@ Módulo 2.5: Cobertura, autorizaciones y planes
 - Afiliacion: persona-plan
 - Autorizacion: aprobaciones de prestaciones
 """
-from sqlalchemy import Column, String, Date, Integer, ForeignKey, Enum, Text, Numeric
+from sqlalchemy import Column, String, Date, Integer, ForeignKey, Enum, Text, Numeric, Boolean
 from sqlalchemy.orm import relationship
 from models.base import BaseModel
 import enum
